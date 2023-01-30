@@ -145,22 +145,30 @@ export class PositionFrameResolver {
     const frameToEdit = await ctx.prisma.editingPositionFrame.findFirst({
       where: { frameId: input.frameID },
     });
-    if (!frameToEdit) {
-      await ctx.prisma.editingPositionFrame.create({
-        data: {
-          userId: ctx.userID,
-          frameId: input.frameID,
-        },
-      });
-    } else if (frameToEdit.userId && frameToEdit.userId !== ctx.userID) {
+    // if (!frameToEdit) {
+    //   await ctx.prisma.editingPositionFrame.create({
+    //     data: {
+    //       userId: ctx.userID,
+    //       frameId: input.frameID,
+    //     },
+    //   });
+    // } else if (frameToEdit.userId && frameToEdit.userId !== ctx.userID) {
+    //   throw new Error(`The frame is now editing by ${frameToEdit.userId}.`);
+    // }
+    if (
+      frameToEdit &&
+      frameToEdit.userId &&
+      frameToEdit.userId !== ctx.userID
+    ) {
       throw new Error(`The frame is now editing by ${frameToEdit.userId}.`);
     }
     await ctx.prisma.positionFrame.update({
       where: { id: input.frameID },
       data: { id: input.frameID, start: input.start },
     });
-    await ctx.prisma.editingPositionFrame.delete({
-      where: { userId: ctx.userID, frameId: input.frameID },
+    await ctx.prisma.editingPositionFrame.update({
+      where: { userId: ctx.userID },
+      data: { frameId: null },
     });
     const positionFrame = await ctx.prisma.positionFrame.findFirst({
       where: { id: input.frameID },
