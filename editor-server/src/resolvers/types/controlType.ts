@@ -2,7 +2,7 @@ import { registerEnumType } from "type-graphql";
 
 export enum ControlType {
   FIBER = "FIBER",
-  EL = "EL",
+  // EL = "EL",
   LED = "LED",
 }
 

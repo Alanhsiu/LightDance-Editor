@@ -12,7 +12,7 @@ export type DBModels = {
 
 export type TContext = {
     db: DBModels;
-    userID: string;
+    userID: number;
     prisma: PrismaClient;
 }
 
@@ -31,21 +31,21 @@ export interface IControlFrame {
 export interface IPositionFrame {
   start: number;
   editing?: string;
-  id: string;
+  id: number;
   _id?: ObjectId;
 }
 export interface IDancer {
   name: string;
   parts: PopulatedDoc<IPart & Document>[];
   positionData: PopulatedDoc<IPosition & Document>[];
-  id: string;
+  id: number;
   _id?: ObjectId;
 }
 export interface IPart {
   name: string;
   type: string;
   controlData: PopulatedDoc<IControl & Document>[];
-  id: string;
+  id: number;
   _id?: ObjectId;
 }
 export interface IControl {

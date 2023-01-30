@@ -103,9 +103,9 @@ export class EffectListResolver {
     );
     const positionFrames: TRedisPositions = {};
     await Promise.all(
-      positionFrameIDs.map(async (positionFrameID: {id: string}) => {
+      positionFrameIDs.map(async (positionFrameID: {id:number}) => {
         const { id } = positionFrameID;
-        const cache = await redis.get(id);
+        const cache = await redis.get(String(id));
         if (cache) {
           const cacheObj: TRedisPosition = JSON.parse(cache);
           delete cacheObj.editing;
@@ -268,7 +268,7 @@ export class EffectListResolver {
               );
             })
           );
-          redis.del(id);
+          redis.del(String(id));
           await ctx.db.Position.deleteMany({ frame: _id });
         })
       );
@@ -379,7 +379,7 @@ export class EffectListResolver {
     );
     await Promise.all(
       newPositionFrameIDs.map(async (id) => {
-        await updateRedisPosition(id);
+        // await updateRedisPosition(id);
       })
     );
 
@@ -460,15 +460,15 @@ export class EffectListResolver {
     const positionRecordIDs = newPositionFrames.map((frame) => {
       return frame.id;
     });
-    const positionRecordPayload: PositionRecordPayload = {
-      mutation: PositionRecordMutation.CREATED_DELETED,
-      editBy: ctx.userID,
-      addID: positionRecordIDs,
-      deleteID: deletePositionList,
-      updateID: [],
-      index,
-    };
-    await publishPositionRecord(positionRecordPayload);
+    // const positionRecordPayload: PositionRecordPayload = {
+    //   mutation: PositionRecordMutation.CREATED_DELETED,
+    //   editBy: ctx.userID,
+    //   addID: positionRecordIDs,
+    //   deleteID: deletePositionList,
+    //   updateID: [],
+    //   index,
+    // };
+    // await publishPositionRecord(positionRecordPayload);
 
     return { ok: true, msg: `Apply effect id: ${id}` };
   }

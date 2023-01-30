@@ -82,7 +82,7 @@ const initRedisPosition = async () => {
   });
   const allDancers = await model.Dancer.find().populate("positionData");
   await Promise.all(
-    value.map(async (data: {id: string, _id: ObjectId}) => {
+    value.map(async (data: {id: number, _id: ObjectId}) => {
       const { _id, id } = data;
       // const frameID = new ObjectId(id)
       const positionFrame = await model.PositionFrame.findById(_id);
@@ -160,8 +160,8 @@ const updateRedisControl = async (id: string) => {
   await redis.set(id, JSON.stringify(cacheObj));
 };
 
-const updateRedisPosition = async (id: string) => {
-  const positionFrame = await model.PositionFrame.findOne({ id });
+const updateRedisPosition = async (id: number) => {
+  const positionFrame = await model.PositionFrame.findOne({ where:{id} });
   if (!positionFrame){
     return;
   }
@@ -178,12 +178,15 @@ const updateRedisPosition = async (id: string) => {
     })
   );
   const cacheObj = { start, editing, pos };
-  await redis.set(id, JSON.stringify(cacheObj));
+  await redis.set(String(id), JSON.stringify(cacheObj));
 };
 
+// const generateID = () => {
+//   const id = nanoid(10); //=> "V1StGXR8_Z5jdHi6B-myT"
+//   return id;
+// };
 const generateID = () => {
-  const id = nanoid(10); //=> "V1StGXR8_Z5jdHi6B-myT"
-  return id;
+  return Math.floor(Math.random() * 1000000000);
 };
 
 initRedisControl();

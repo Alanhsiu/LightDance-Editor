@@ -46,7 +46,7 @@ const { SECRET_KEY } = process.env;
 
   const subscriptionBuildOptions = async (
     connectionParams: ConnectionParam,
-    webSocket: WebSocket
+    webSocket: any
   ) => {
     try {
       const { userID, name } = connectionParams;
@@ -61,7 +61,7 @@ const { SECRET_KEY } = process.env;
     } catch (e) {console.log(e);}
   };
 
-  const subscriptionDestroyOptions = async (webSocket: WebSocket, context: ConnectionContext) => {
+  const subscriptionDestroyOptions = async (webSocket: any, context: ConnectionContext) => {
     const initialContext = await context.initPromise;
     if (initialContext) {
       const { userID } = initialContext;
@@ -90,9 +90,9 @@ const { SECRET_KEY } = process.env;
         const { name, userid } = req.headers;
         if (!userid || !name)
           throw new Error("UserID and name must be filled.");
-        const userID: string = (typeof(userid) === "string") ? userid : userid[0];
+        const userID: number = (typeof(userid) === "number") ? userid : 0;
         const userName: string = (typeof(name) === "string") ? name: name[0];
-        const user = await db.User.findOne({ name: userName, userID: userID });
+        const user = await db.User.findOne({ name: userName });
         if (!user) {
           const newUser = await new db.User({ name: userName, userID: userid }).save();
         }

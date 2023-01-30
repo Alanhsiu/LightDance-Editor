@@ -225,7 +225,7 @@ export class ShiftResolver {
             );
           })
         );
-        redis.del(id);
+        // redis.del(id);
         await ctx.db.Position.deleteMany({ frame: _id });
       })
     );
@@ -298,17 +298,17 @@ export class ShiftResolver {
       });
 
       // update redis
-      const updatePositionIDs: string[] = await Promise.all(
-        updatePositionFrames.map(async (obj) => {
-          const { id } = obj;
-          await ctx.db.PositionFrame.updateOne(
-            { id },
-            { $inc: { start: move } }
-          );
-          await updateRedisPosition(id);
-          return id;
-        })
-      );
+      // const updatePositionIDs: string[] = await Promise.all(
+      //   updatePositionFrames.map(async (obj) => {
+      //     const { id } = obj;
+      //     await ctx.db.PositionFrame.updateOne(
+      //       { id },
+      //       { $inc: { start: move } }
+      //     );
+      //     // await updateRedisPosition(id);
+      //     return id;
+      //   })
+      // );
 
       // get id list of deletePosition
       const deletePositionList = deletePositionFrame.map((data) => {
@@ -321,7 +321,7 @@ export class ShiftResolver {
         frame: {
           createList: [],
           deleteList: deletePositionList,
-          updateList: updatePositionIDs,
+          // updateList: updatePositionIDs,
         },
       };
       await publishPositionMap(positionMapPayload);
@@ -332,19 +332,19 @@ export class ShiftResolver {
       });
       index = -1;
       await allPositionFrames.map((frame, idx: number) => {
-        if (frame.id === updatePositionIDs[0]) {
-          index = idx;
-        }
+        // if (frame.id === updatePositionIDs[0]) {
+        //   index = idx;
+        // }
       });
-      const positionRecordPayload: PositionRecordPayload = {
-        mutation: PositionRecordMutation.UPDATED_DELETED,
-        editBy: ctx.userID,
-        addID: [],
-        updateID: updatePositionIDs,
-        deleteID: deletePositionList,
-        index,
-      };
-      await publishPositionRecord(positionRecordPayload);
+      // const positionRecordPayload: PositionRecordPayload = {
+      //   mutation: PositionRecordMutation.UPDATED_DELETED,
+      //   editBy: ctx.userID,
+      //   addID: [],
+      //   // updateID: updatePositionIDs,
+      //   deleteID: deletePositionList,
+      //   index,
+      // };
+      // await publishPositionRecord(positionRecordPayload);
     }
 
     return { ok: true, msg: "Done" };

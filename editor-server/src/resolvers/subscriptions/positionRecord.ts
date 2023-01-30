@@ -6,19 +6,19 @@ export class PositionRecordPayload {
     mutation: PositionRecordMutation;
 
   @Field()
-    editBy: string;
+    editBy: number;
 
   @Field((type) => Int)
     index: number;
 
-  @Field((type) => [String])
-    addID: string[];
+  @Field((type) => [Int])
+    addID: number[];
 
-  @Field((type) => [String])
-    updateID: string[];
+  @Field((type) => [Number])
+    updateID: number[] | null;
 
-  @Field((type) => [String])
-    deleteID: string[];
+  @Field((type) => [Number])
+    deleteID: number[];
 }
 
 export enum PositionRecordMutation {

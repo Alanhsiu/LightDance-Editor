@@ -41,7 +41,7 @@ services:
       POSTGRES_PASSWORD: NTUEELightdance
       PGDATA: /var/lib/postgresql/data
     volumes:
-      - ./pg/pg-data:/var/lib/postgresql/data
+      - ./pg-data-new:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   pg-admin:

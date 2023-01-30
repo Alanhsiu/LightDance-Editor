@@ -6,7 +6,7 @@ export class ControlRecordPayload {
     mutation: ControlRecordMutation;
 
   @Field()
-    editBy: string;
+    editBy: number;
 
   @Field((type) => Int)
     index: number;

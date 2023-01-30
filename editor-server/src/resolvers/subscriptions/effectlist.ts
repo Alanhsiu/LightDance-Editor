@@ -10,7 +10,7 @@ export class EffectListPayload {
     effectListID: string;
 
   @Field()
-    editBy: string;
+    editBy: number;
 
   @Field((type) => EffectList, { nullable: true })
     effectListData?: any;

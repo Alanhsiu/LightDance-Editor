@@ -29,14 +29,14 @@ const exportData = async (req: Request, res: Response) => {
     await Promise.all(
       positionFrames.map(async (frame: IPositionFrame) => {
         const { id } = frame;
-        const cache = await redis.get(id);
-        if (cache) {
-          const cacheObj = JSON.parse(cache);
-          delete cacheObj.editing;
-          position[id] = cacheObj;
-        } else {
-          throw new Error(`Frame ${id} not found in redis.`);
-        }
+        // const cache = await redis.get(id);
+        // if (cache) {
+        //   const cacheObj = JSON.parse(cache);
+        //   delete cacheObj.editing;
+        //   position[id] = cacheObj;
+        // } else {
+        //   throw new Error(`Frame ${id} not found in redis.`);
+        // }
       })
     );
 
